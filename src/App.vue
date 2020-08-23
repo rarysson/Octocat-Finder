@@ -11,6 +11,17 @@
     font-family: "Roboto", sans-serif;
 }
 
+:root {
+    --primary: #382039;
+    --secondary: #5a3d5c;
+    --purple: #a51c92;
+    --purple-light: #fd71ea;
+    --dark: #200f21;
+    --light: #f0f0f0;
+    --purple-gradient: linear-gradient(90deg, #a51c92 0%, #f638dc 100%);
+    --light-gradient: linear-gradient(359.39deg, #efeeee 0.46%, #ffffff 99.42%);
+}
+
 /* Configurações de Reset */
 *,
 *::before,
@@ -23,11 +34,6 @@
 a {
     text-decoration: none;
     color: inherit;
-}
-
-ul,
-ol {
-    list-style: none;
 }
 
 button {
