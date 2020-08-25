@@ -47,6 +47,7 @@
 <script>
 import SocialLinks from "../components/SocialLinks";
 import Modal from "../components/Modal";
+import API from "../util/api";
 
 export default {
     name: "Home",
@@ -64,8 +65,33 @@ export default {
     },
 
     methods: {
-        search_user() {
-            this.open_modal = true;
+        async search_user() {
+            const query = `query {
+                user(login: "${this.user}") {
+                    name,
+                    avatarUrl,
+                    repositories {
+                        totalCount
+                    }
+                }
+            }`;
+            const data = await API.get(query);
+
+            const user_info = {
+                icon: data.user.avatarUrl,
+                name: data.user.name,
+                username: this.user,
+                total_repo: data.user.repositories.totalCount
+            };
+
+            if (data.user === null) {
+                this.open_modal = true;
+            } else {
+                this.$router.push({
+                    name: "User",
+                    params: { user: user_info }
+                });
+            }
         }
     }
 };
