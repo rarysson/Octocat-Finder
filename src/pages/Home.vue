@@ -2,6 +2,8 @@
     <div class="container">
         <div class="bg-pattern"></div>
 
+        <modal v-model="open_modal" />
+
         <div class="content-container">
             <img src="../assets/logo.png" alt="bitwise logo" class="logo" />
 
@@ -12,54 +14,59 @@
                     ficou muito <strong>fácil!</strong>
                 </p>
 
-                <form class="search-box">
-                    <div class="icon-input-box search">
-                        <img src="../assets/icon/search.png" alt="" />
-                    </div>
-
-                    <input
-                        type="text"
-                        placeholder="Buscar usuário"
-                        :value="user"
-                    />
-
+                <form class="search-box" @submit.prevent="search_user">
                     <div class="icon-input-box github">
                         <img src="../assets/icon/github.png" alt="" />
                     </div>
+
+                    <input
+                        required
+                        type="text"
+                        placeholder="Buscar usuário"
+                        v-model="user"
+                    />
+
+                    <button class="icon-input-box search" type="submit">
+                        <img
+                            src="../assets/icon/search.png"
+                            alt="botão buscar usuário"
+                        />
+                    </button>
                 </form>
             </div>
 
             <img src="../assets/background_home.png" alt="" class="bg-home" />
 
             <footer>
-                <img
-                    src="../assets/icon/medium.png"
-                    alt="medium logo"
-                    class="social-icon"
-                />
-                <img
-                    src="../assets/icon/linkedin.png"
-                    alt="linkedin logo"
-                    class="social-icon"
-                />
-                <img
-                    src="../assets/icon/instagram.png"
-                    alt="instagram logo"
-                    class="social-icon"
-                />
+                <social-links />
             </footer>
         </div>
     </div>
 </template>
 
 <script>
+import SocialLinks from "../components/SocialLinks";
+import Modal from "../components/Modal";
+
 export default {
     name: "Home",
 
+    components: {
+        SocialLinks,
+        Modal
+    },
+
     data() {
         return {
-            user: null
+            user: null,
+            open_modal: false
         };
+    },
+
+    methods: {
+        search_user() {
+            this.open_modal = true;
+        }
     }
 };
 </script>
@@ -118,6 +125,7 @@ strong {
     height: 56px;
     display: flex;
     margin-top: 6vw;
+    border-radius: 5px;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
@@ -126,6 +134,7 @@ strong {
     font-family: inherit;
     font-size: 1rem;
     flex: 1;
+    padding-left: 20px;
 }
 
 .icon-input-box {
@@ -137,12 +146,23 @@ strong {
 
 .icon-input-box.search {
     background-color: #fff;
+    border: none;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.icon-input-box.search:hover {
+    background-color: var(--light);
 }
 
 .icon-input-box.github {
     background-color: var(--secondary);
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.search-box:focus-within .icon-input-box.github {
+    background: var(--purple-gradient);
 }
 
 .bg-home {
@@ -154,19 +174,5 @@ footer {
     text-align: center;
     grid-area: footer;
     margin-top: 150px;
-}
-
-.social-icon {
-    width: 25px;
-    height: 25px;
-    margin: 0 10px;
-    filter: invert(68%) sepia(20%) saturate(5972%) hue-rotate(280deg)
-        brightness(105%) contrast(98%);
-}
-
-.social-icon:hover {
-    cursor: pointer;
-    filter: invert(25%) sepia(16%) saturate(1330%) hue-rotate(248deg)
-        brightness(87%) contrast(83%);
 }
 </style>
