@@ -18,6 +18,7 @@
     --purple-light: #fd71ea;
     --dark: #200f21;
     --light: #f0f0f0;
+    --blue: #657fa0;
     --purple-gradient: linear-gradient(90deg, #a51c92 0%, #f638dc 100%);
     --light-gradient: linear-gradient(359.39deg, #efeeee 0.46%, #ffffff 99.42%);
 }

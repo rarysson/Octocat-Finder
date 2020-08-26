@@ -2,7 +2,7 @@
     <div class="container">
         <div class="bg-pattern"></div>
 
-        <modal v-model="open_modal" />
+        <alert-modal v-model="open_modal" :message="alert_message" />
 
         <div class="content-container">
             <img src="../assets/logo.png" alt="bitwise logo" class="logo" />
@@ -14,25 +14,7 @@
                     ficou muito <strong>fácil!</strong>
                 </p>
 
-                <form class="search-box" @submit.prevent="search_user">
-                    <div class="icon-input-box github">
-                        <img src="../assets/icon/github.png" alt="" />
-                    </div>
-
-                    <input
-                        required
-                        type="text"
-                        placeholder="Buscar usuário"
-                        v-model="user"
-                    />
-
-                    <button class="icon-input-box search" type="submit">
-                        <img
-                            src="../assets/icon/search.png"
-                            alt="botão buscar usuário"
-                        />
-                    </button>
-                </form>
+                <search-input class="search-input" @searched="search_user" />
             </div>
 
             <img src="../assets/background_home.png" alt="" class="bg-home" />
@@ -45,52 +27,48 @@
 </template>
 
 <script>
+import SearchInput from "../components/SearchInput";
 import SocialLinks from "../components/SocialLinks";
-import Modal from "../components/Modal";
+import AlertModal from "../components/AlertModal";
 import API from "../util/api";
 
 export default {
     name: "Home",
 
     components: {
+        SearchInput,
         SocialLinks,
-        Modal
+        AlertModal
     },
 
     data() {
         return {
-            user: null,
-            open_modal: false
+            open_modal: false,
+            alert_message: ""
         };
     },
 
     methods: {
-        async search_user() {
-            const query = `query {
-                user(login: "${this.user}") {
-                    name,
-                    avatarUrl,
-                    repositories {
-                        totalCount
+        async search_user(user) {
+            try {
+                const user_info = await API.get_user_data(user);
+
+                if (user_info === null) {
+                    this.open_modal = true;
+                    this.alert_message = "Nenhum usuário encontrado!";
+                } else {
+                    if (user_info.total_repo === 0) {
+                        this.open_modal = true;
+                        this.alert_message = `O usuário ${user} não possui nenhum repositório!`;
+                    } else {
+                        this.$router.push({
+                            name: "User",
+                            params: { user: user_info }
+                        });
                     }
                 }
-            }`;
-            const data = await API.get(query);
-
-            const user_info = {
-                icon: data.user.avatarUrl,
-                name: data.user.name,
-                username: this.user,
-                total_repo: data.user.repositories.totalCount
-            };
-
-            if (data.user === null) {
-                this.open_modal = true;
-            } else {
-                this.$router.push({
-                    name: "User",
-                    params: { user: user_info }
-                });
+            } catch (error) {
+                console.log(error);
             }
         }
     }
@@ -127,6 +105,7 @@ export default {
 
 .logo {
     width: 130px;
+    height: 50px;
     grid-area: header;
     margin-bottom: 50px;
 }
@@ -145,50 +124,6 @@ strong {
     grid-area: input;
     align-self: center;
     width: 90%;
-}
-
-.search-box {
-    height: 56px;
-    display: flex;
-    margin-top: 6vw;
-    border-radius: 5px;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.search-box input {
-    border: none;
-    font-family: inherit;
-    font-size: 1rem;
-    flex: 1;
-    padding-left: 20px;
-}
-
-.icon-input-box {
-    width: 64px;
-    display: grid;
-    place-items: center;
-    border-radius: 5px;
-}
-
-.icon-input-box.search {
-    background-color: #fff;
-    border: none;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-}
-
-.icon-input-box.search:hover {
-    background-color: var(--light);
-}
-
-.icon-input-box.github {
-    background-color: var(--secondary);
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-.search-box:focus-within .icon-input-box.github {
-    background: var(--purple-gradient);
 }
 
 .bg-home {

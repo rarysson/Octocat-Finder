@@ -12,7 +12,7 @@
                         />
                     </button>
 
-                    <h1>Nenhum usuário encontrado!</h1>
+                    <h1>{{ message }}</h1>
 
                     <p>Enquanto isso, acompanhe a Bitwise nas redes sociais:</p>
                     <social-links class="social" />
@@ -26,7 +26,9 @@
 import SocialLinks from "../components/SocialLinks";
 
 export default {
-    props: ["value"],
+    name: "AlertModal",
+
+    props: ["value", "message"],
 
     components: {
         SocialLinks
