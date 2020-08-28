@@ -24,7 +24,7 @@ API.get_user_data = async user => {
         user(login: "${user}") {
             name,
             avatarUrl,
-            repositories {
+            repositories(privacy: PUBLIC) {
                 totalCount
             }
         }
@@ -44,6 +44,59 @@ API.get_user_data = async user => {
             };
 
             return user_info;
+        }
+    } catch (error) {
+        throw error;
+    }
+};
+
+API.get_repositories_data = async user => {
+    const query = `query {
+        user(login: "${user.username}") {
+          repositories(last: ${
+              user.total_repo <= 100 ? user.total_repo : 100
+          }) {
+            nodes {
+              name
+              defaultBranchRef {
+                target {
+                  ... on Commit {
+                    history {
+                      totalCount
+                    }
+                    message
+                    oid
+                  }
+                }
+              }
+            }
+          }
+        }
+      }`;
+
+    try {
+        const data = await API.get(query);
+
+        if (data.user === null) {
+            return null;
+        } else {
+            const repositories_info = [];
+
+            data.user.repositories.nodes.forEach(repository => {
+                if (repository.defaultBranchRef !== null) {
+                    repositories_info.push({
+                        name: repository.name,
+                        commits_qnt:
+                            repository.defaultBranchRef.target.history
+                                .totalCount,
+                        last_commit_message:
+                            repository.defaultBranchRef.target.message,
+                        last_commit_hash: repository.defaultBranchRef.target.oid
+                    });
+                }
+            });
+
+            return repositories_info;
         }
     } catch (error) {
         throw error;
