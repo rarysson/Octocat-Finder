@@ -53,26 +53,26 @@ API.get_user_data = async user => {
 API.get_repositories_data = async user => {
     const query = `query {
         user(login: "${user.username}") {
-          repositories(last: ${
-              user.total_repo <= 100 ? user.total_repo : 100
-          }) {
-            nodes {
-              name
-              defaultBranchRef {
-                target {
-                  ... on Commit {
-                    history {
-                      totalCount
+            repositories(last: ${
+                user.total_repo <= 100 ? user.total_repo : 100
+            }) {
+                nodes {
+                    name
+                    defaultBranchRef {
+                    target {
+                        ... on Commit {
+                            history {
+                                totalCount
+                            }
+                            message
+                            oid
+                            }
+                        }
                     }
-                    message
-                    oid
-                  }
                 }
-              }
             }
-          }
         }
-      }`;
+    }`;
 
     try {
         const data = await API.get(query);
@@ -96,7 +96,7 @@ API.get_repositories_data = async user => {
                 }
             });
 
-            return repositories_info;
+            return repositories_info.reverse();
         }
     } catch (error) {
         throw error;

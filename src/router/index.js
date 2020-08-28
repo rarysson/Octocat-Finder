@@ -25,6 +25,7 @@ if (process.env.MODE !== "ssr") {
 }
 
 const router = new VueRouter({
+    mode: "history",
     routes
 });
 

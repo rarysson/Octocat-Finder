@@ -39,47 +39,14 @@
                 </div>
             </div>
 
-            <div class="table-container">
-                <table>
-                    <caption>
-                        Atividades de
-                        {{
-                            user.name
-                        }}
-                    </caption>
-
-                    <thead>
-                        <tr>
-                            <th>Nome do repositório</th>
-                            <th>Quantidade de commit</th>
-                            <th>Mensagem do último commit</th>
-                            <th>Hash do útilmo commit</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr v-if="repositories.length === 0 && !default_user">
-                            <td class="loading"></td>
-                            <td class="loading"></td>
-                            <td class="loading"></td>
-                            <td class="loading"></td>
-                        </tr>
-
-                        <tr
-                            v-for="(repository, index) in repositories"
-                            :key="index"
-                        >
-                            <td>{{ repository.name }}</td>
-                            <td>{{ repository.commits_qnt }}</td>
-                            <td>{{ repository.last_commit_message }}</td>
-                            <td>{{ repository.last_commit_hash }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <user-table
+                :user="user"
+                :default-user="default_user"
+                :repositories="repositories"
+            />
         </div>
 
-        <footer></footer>
+        <footer-info />
     </div>
 </template>
 
@@ -87,6 +54,8 @@
 import SearchInput from "../components/SearchInput";
 import AlertModal from "../components/AlertModal";
 import SocialLinks from "../components/SocialLinks";
+import UserTable from "../components/UserTable";
+import FooterInfo from "../components/FooterInfo";
 import API from "../util/api";
 
 export default {
@@ -95,7 +64,9 @@ export default {
     components: {
         SearchInput,
         AlertModal,
-        SocialLinks
+        SocialLinks,
+        UserTable,
+        FooterInfo
     },
 
     data() {
@@ -120,14 +91,13 @@ export default {
         if (!this.default_user) {
             this.search_repositories();
         }
-        console.log(this.default_user);
     },
 
     methods: {
         async search_user(user) {
             try {
-                this.default_user = false;
                 const user_info = await API.get_user_data(user);
+                this.default_user = false;
 
                 if (user_info === null) {
                     this.open_modal = true;
@@ -165,6 +135,7 @@ export default {
 <style scoped>
 .container {
     background: var(--light-gradient);
+    scroll-behavior: smooth;
 }
 
 .user-content-container {
@@ -248,71 +219,5 @@ header {
     top: 35%;
     background-color: var(--secondary);
     border-radius: 0px 100px 100px 0px;
-}
-
-.table-container {
-    background-color: #fff;
-    border-radius: 5px;
-    width: 100%;
-    flex: 1;
-    display: flex;
-    overflow: auto;
-    color: var(--blue);
-}
-
-caption {
-    text-align: left;
-    font-weight: bold;
-    font-size: 1.25rem;
-    margin-bottom: 15px;
-    padding: 30px 30px 0;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th {
-    text-align: left;
-    width: 25%;
-}
-
-th,
-td {
-    border-bottom: 1px solid #d4dae4;
-    padding: 30px;
-    font-size: 0.95rem;
-}
-
-tr:nth-of-type(even) {
-    background-color: #fafafc;
-}
-
-.loading {
-    position: relative;
-}
-
-.loading::after {
-    display: block;
-    content: "";
-    position: absolute;
-    top: 0;
-    width: 100px;
-    height: 100%;
-    transform: translateX(-100%);
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(125, 125, 125, 0.2),
-        transparent
-    );
-    animation: loading 1s infinite;
-}
-
-@keyframes loading {
-    100% {
-        transform: translateX(100%);
-    }
 }
 </style>
