@@ -19,9 +19,7 @@
 
             <img src="../assets/background_home.png" alt="" class="bg-home" />
 
-            <footer>
-                <social-links />
-            </footer>
+            <social-links class="social" />
         </div>
     </div>
 </template>
@@ -131,9 +129,41 @@ strong {
     place-self: center;
 }
 
-footer {
+.social {
     text-align: center;
     grid-area: footer;
-    margin-top: 150px;
+    padding: 10vw 0 1vw;
+}
+
+@media (max-width: 900px) {
+    .logo {
+        filter: brightness(0) saturate(100%) invert(26%) sepia(25%)
+            saturate(5617%) hue-rotate(285deg) brightness(83%) contrast(108%);
+    }
+
+    .bg-pattern {
+        width: 100%;
+        height: 100%;
+    }
+
+    .content-container {
+        padding: 4vw 5vw 1vw;
+        grid-template-areas:
+            "header"
+            "input"
+            "footer";
+    }
+
+    .bg-home {
+        display: none;
+    }
+
+    p {
+        color: var(--purple);
+    }
+
+    .search-container {
+        width: 100%;
+    }
 }
 </style>

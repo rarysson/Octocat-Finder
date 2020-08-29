@@ -28,7 +28,7 @@
             <div class="bottom">
                 <p>Todos os direitos reservados - 2020</p>
 
-                <social-links />
+                <social-links class="social" />
 
                 <a @click="scroll_to_top">VOLTAR AO TOPO</a>
             </div>
@@ -116,5 +116,54 @@ a {
 
 a:hover {
     color: var(--purple);
+}
+
+@media (max-width: 900px) {
+    .content-container .top {
+        flex-wrap: wrap;
+    }
+
+    .about-us,
+    .location {
+        width: 50%;
+        padding-right: 20px;
+    }
+
+    .about-us {
+        margin-bottom: 50px;
+    }
+
+    .content-container .bottom {
+        flex-wrap: wrap;
+    }
+
+    a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .social {
+        margin: 20px 0;
+    }
+}
+
+@media (max-width: 550px) {
+    .content-container .top {
+        justify-content: center;
+    }
+
+    .content-container .top > *:not(:first-child) {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .about-us {
+        margin-bottom: 0;
+    }
+
+    .content-container .bottom > * {
+        width: 100%;
+        text-align: center;
+    }
 }
 </style>

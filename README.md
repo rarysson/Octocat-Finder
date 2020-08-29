@@ -18,3 +18,9 @@ Para usar localmente, clone o repositório, vá na pasta criada e execute os com
 npm install
 npm run serve
 ```
+
+Dentro do pasta criada crie um arquivo chamado `.env.local`. Dentro desse arquivo coloque o seguinte valor (sem os parênteses):
+
+```
+VUE_APP_TOKEN=(SUA CHAVE DE ACESSO DA API DO GITHUB)
+```

@@ -27,9 +27,11 @@
 
                 <tr v-for="(repository, index) in repositories" :key="index">
                     <td>{{ repository.name }}</td>
-                    <td>{{ repository.commits_qnt }}</td>
-                    <td>{{ repository.last_commit_message }}</td>
-                    <td>{{ repository.last_commit_hash }}</td>
+                    <td class="commits-qnt">{{ repository.commits_qnt }}</td>
+                    <td>
+                        {{ repository.last_commit_message }}
+                    </td>
+                    <td class="hash">{{ repository.last_commit_hash }}</td>
                 </tr>
             </tbody>
         </table>
@@ -60,7 +62,7 @@ caption {
     font-weight: bold;
     font-size: 1.25rem;
     margin-bottom: 15px;
-    padding: 30px 30px 0;
+    padding: 1.3vw 1.3vw 0;
 }
 
 table {
@@ -73,10 +75,13 @@ th {
     width: 25%;
 }
 
+tr {
+    border-bottom: 1px solid #d4dae4;
+}
+
 th,
 td {
-    border-bottom: 1px solid #d4dae4;
-    padding: 30px;
+    padding: 1.3vw;
     font-size: 0.95rem;
 }
 
@@ -108,6 +113,22 @@ tr:nth-of-type(even) {
 @keyframes loading {
     100% {
         transform: translateX(100%);
+    }
+}
+
+@media (max-width: 1000px) {
+    .hash {
+        display: inline-block;
+        width: 100px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 550px) {
+    .hash {
+        width: 75px;
     }
 }
 </style>

@@ -220,4 +220,29 @@ header {
     background-color: var(--secondary);
     border-radius: 0px 100px 100px 0px;
 }
+
+@media (max-width: 1000px) {
+    .user-content-container {
+        padding: 4vw 5vw 8vw;
+    }
+
+    .search-input {
+        width: 75%;
+    }
+
+    .social {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    header {
+        flex-wrap: wrap;
+    }
+
+    .search-input {
+        width: 100%;
+        margin: 30px 0;
+    }
+}
 </style>
