@@ -12,6 +12,8 @@ Esse projeto foi desenvolvido baseado no desafio da [Bitwise](https://github.com
 
 ## Rodando o APP
 
+Para usar online acesse o link: https://octocat-finder.herokuapp.com/
+
 Para usar localmente, clone o repositório, vá na pasta criada e execute os comandos:
 
 ```

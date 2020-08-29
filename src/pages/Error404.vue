@@ -23,9 +23,24 @@ export default {
     display: grid;
     place-items: center;
     text-align: center;
+    background: var(--light);
 }
 
 h1 {
     margin-bottom: 30px;
+}
+
+button {
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    color: var(--light);
+    background-color: var(--purple);
+    font-size: 1.1rem;
+}
+
+button:hover {
+    background: var(--purple-gradient);
+    transform: scale(1.05);
 }
 </style>
