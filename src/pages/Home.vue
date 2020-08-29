@@ -161,9 +161,16 @@ strong {
     p {
         color: var(--purple);
     }
+}
 
+@media (max-width: 350px) {
     .search-container {
+        width: 85%;
+    }
+
+    .search-box {
         width: 100%;
+        height: 40px;
     }
 }
 </style>

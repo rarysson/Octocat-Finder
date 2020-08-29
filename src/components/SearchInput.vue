@@ -8,8 +8,19 @@
             required
             type="text"
             placeholder="Buscar usuário"
+            list="users-list"
             v-model="user"
+            @input="search_users"
         />
+        <datalist id="users-list">
+            <option
+                v-for="(option, index) in options"
+                :key="index"
+                :value="option.login"
+            >
+                {{ option.login }}
+            </option>
+        </datalist>
 
         <button class="icon-input-box search" type="submit">
             <img src="../assets/icon/search.png" alt="botão buscar usuário" />
@@ -18,30 +29,63 @@
 </template>
 
 <script>
+import API from "../util/api";
+
 export default {
     name: "SearchInput",
 
     data() {
         return {
-            user: null
+            user: null,
+            options: [],
+            timeout: null
         };
     },
 
     methods: {
         search() {
             this.$emit("searched", this.user);
+        },
+
+        async search_users() {
+            try {
+                const get_user = async () => {
+                    const query = `{
+                        search(query: "${this.user}", type: USER, last: 50) {
+                            nodes {
+                                ... on User {
+                                    login
+                                }
+                            }
+                        }
+                    }`;
+                    const users = await API.get(query);
+
+                    this.options = users.search.nodes;
+                };
+
+                this.debounce(get_user, 350);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        debounce(callback, delay) {
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(callback, delay);
         }
     }
 };
 </script>
 
-<style scoped>
+<style>
 .search-box {
     height: 56px;
     display: flex;
     margin-top: 6vw;
     border-radius: 5px;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    background-color: white;
 }
 
 .search-box input {
