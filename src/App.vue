@@ -9,6 +9,7 @@
 
 html {
     background-color: var(--light);
+    scroll-behavior: smooth;
 }
 
 #app {
